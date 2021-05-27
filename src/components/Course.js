@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
 import { insert, read, update, remove } from "../services/apiService";
 
-const Course = (props) => {
-  const [id] = useState(props.match.params.id);
-
+const Course = ({ match, history }) => {
+  const [id] = useState(match.params.id);
   const [course, setCourse] = useState({
     _id: "0",
     name: "",
     points: 0,
   });
-  const [inputRequired, setInputRequired] = useState({});
+  const [inputRequired, setInputRequired] = useState("");
 
   useEffect(() => {
     if (id !== "0") {
@@ -28,7 +27,7 @@ const Course = (props) => {
   }
 
   const back = () => {
-    props.history.push("/courses");
+    history.push("/courses");
   };
 
   const save = () => {
@@ -38,13 +37,13 @@ const Course = (props) => {
           "courses",
           (({ name, points }) => ({ name, points }))(course),
           (data) => {
-            if (data) return props.history.push("/courses");
+            if (data) return history.push("/courses");
             console.log("There was an error during save data");
           }
         );
       } else {
         update("courses", id, course, (data) => {
-          if (data) return props.history.push("/courses");
+          if (data) return history.push("/courses");
           console.log("There was an error during save data");
         });
       }
@@ -52,7 +51,7 @@ const Course = (props) => {
       if (!course.name && !course.points) {
         setInputRequired({
           nameError: "Please fill out this field.",
-          pointsError: "Please fill out this field.",
+          pointsError: "Please fill out this filed.",
         });
       } else if (!course.name) {
         setInputRequired({
@@ -70,7 +69,7 @@ const Course = (props) => {
 
   const del = () => {
     remove("courses", id, (data) => {
-      props.history.push("/courses");
+      history.push("/courses");
     });
   };
 
@@ -84,7 +83,7 @@ const Course = (props) => {
             type="text"
             name="name"
             value={course.name}
-            onChange={changeHandler}
+            onChange={changeHandler} 
             style={{ width: "60%" }}
           />
           <span style={{ color: "red" }}>{inputRequired.nameError}</span>
@@ -92,7 +91,7 @@ const Course = (props) => {
         <div style={{ margin: "12px 0" }}>
           <label htmlFor="points">Course points: </label>
           <input
-            type="text"
+            type="number"
             name="points"
             value={course.points}
             onChange={changeHandler}

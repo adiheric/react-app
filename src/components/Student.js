@@ -16,7 +16,6 @@ const Student = (props) => {
   useEffect(() => {
     if (id !== "0") {
       read("students", id, (data) => {
-        //console.log(data);
         if (data) setStudent(data);
       });
     }
@@ -102,7 +101,7 @@ const Student = (props) => {
         <div style={{ margin: "12px 0" }}>
           <label htmlFor="yearOfBirth">Year of Birth: </label>
           <input
-            type="text"
+            type="number"
             name="yearOfBirth"
             value={student.yearOfBirth || ""}
             onChange={changeHandler}
